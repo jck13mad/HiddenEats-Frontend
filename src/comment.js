@@ -33,5 +33,28 @@ class Comment {
         commentList.appendChild(li)
     }
 
+    static submitComment(commentContent, commentList, menuItemID){
+        fetch(commentsURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify({
+                content: commentContent,
+                menu_item_id: menuItemID,
+                commentList: commentList
+            })
+        })
+        .then(response => response.json())
+        .then(comment => {
+            let newComment = new Comment(comment)
+
+            const menuItem = MenuItem.allMenuItems.find(c => parseInt(c.id) === newComment.menu_item_id)
+            menuItem.comments.push(newComment)
+
+            newComment.renderComment(commentList)
+        })
+    }
 
 }
