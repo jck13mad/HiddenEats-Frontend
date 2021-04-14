@@ -7,3 +7,13 @@ const companyNameInput = document.getElementById("input-company-name")
 const descriptionInput = document.getElementById("input-description")
 const menuItemList = document.getElementById("menu-item-list")
 const searchBar = document.getElementById("searchBar")
+
+searchBar.addEventListener("keyup", function(e){
+    const searchInput = e.target.value.toLowerCase()
+    const searchResult = MenuItem.allMenuItems.filter(menuItem => {
+        if (menuItem.name.toLowerCase().includes(searchInput)){
+            return true
+        } 
+    })
+    MenuItem.renderMenuItems(searchResult)
+})
