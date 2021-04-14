@@ -17,3 +17,7 @@ searchBar.addEventListener("keyup", function(e){
     })
     MenuItem.renderMenuItems(searchResult)
 })
+
+menuItemForm.addEventListener("submit", MenuItem.submitMenuItem)
+
+MenuItem.fetchMenuItems()
