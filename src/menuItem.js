@@ -57,5 +57,53 @@ class MenuItem {
         deleteBtn.className = "btn btn-primary btn-sm"
         deleteBtn.innerText = "Remove Hidden Eat"
         deleteBtn.addEventListener("click", this.deleteMenuItem)
+
+        const commentForm = document.createElement('form')
+        commentForm.innerHTML += `<input type="text"  class="form-control" id="comment-input" placeholder="Comment Here">
+        <input type="submit" class="btn btn-primary btn-sm" value="Add">`
+
+        commentForm.addEventListener("submit", Comment.createComment)
+
+        const commentList = document.createElement("ul")
+        commentList.className = "list-group list-group-flush"
+        commentList.dataset.id = this.id
+
+        this.comments.forEach(comment => {
+            let newComment = new Comment(comment)
+            newComment.renderComment(commentList)
+        })
+
+        menuItemLI.append( h3, h4, img, p, commentForm, commentList, deleteBtn)
+    }
+
+    static submitMenuItem(e){
+        e.preventDefault()
+        fetch(menuItemsURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify({
+                image: imageInput.value,
+                name: menuItemNameInput.value,
+                company: companyNameInput.value,
+                description: descriptionInput.value
+            })
+        })   
+        .then(response => response.json())
+        .then(menuItem => {
+            let newMenuItem = new MenuItem(menuItem.data)
+            menuItemForm.reset()
+        })
+    }
+
+    deleteMenuItem(){
+        const menuItemID = this.parentElement.dataset.id
+
+        fetch(`${menuItemsURL}/${menuItemID}`,{
+            method: "DELETE"
+        })
+        this.parentElement.remove()
     }
 }
