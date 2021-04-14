@@ -57,4 +57,12 @@ class Comment {
         })
     }
 
+    deleteComment(){
+        const commentID = this.parentElement.dataset.id
+        fetch(`${commentsURL}/${commentID}`,{
+            method: "DELETE"
+        })
+        
+        this.parentElement.remove()
+    }
 }
