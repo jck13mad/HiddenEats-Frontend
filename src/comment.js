@@ -16,5 +16,22 @@ class Comment {
         e.target.reset()
     }
 
+    renderComment(commentList){
+        const li = document.createElement('li')
+        li.className = "list-group-item"
+        li.dataset.id = this.id
+        li.innerText = this.content
+
+        const lnbr = document.createElement('br')
+        const deleteBtn = document.createElement('button')
+        deleteBtn.className = "badge badge-pill badge-primary"
+        deleteBtn.innerText = "Remove Comment"
+
+        li.append(lnbr, deleteBtn)
+
+        deleteBtn.addEventListener("click", this.deleteComment)
+        commentList.appendChild(li)
+    }
+
 
 }
