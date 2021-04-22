@@ -21,4 +21,3 @@ searchBar.addEventListener("keyup", function(e){
 itemForm.addEventListener("submit", Item.submitItem())
 
 Item.fetchItems()
-Item.renderItems(itemList)

@@ -73,7 +73,7 @@ class Item {
             newComment.renderComment(commentList)
         })
 
-        itemLI.append( h3, h4, img, p, commentForm, commentList, deleteBtn)
+        itemLI.append(h3, h4, img, p, deleteBtn, commentForm, commentList)
     }
 
     static submitItem(e){
@@ -94,6 +94,7 @@ class Item {
         .then(response => response.json())
         .then(item => {
             let newItem = new Item(item.data)
+
             itemForm.reset()
         })
     }

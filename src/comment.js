@@ -12,7 +12,7 @@ class Comment {
         const commentList = e.target.previousElementSibling
         const itemID = e.target.parentElement.dataset.id
 
-        Comment.submitComment(commentContent, commentList, itemID, li)
+        Comment.submitComment(commentContent, commentList, itemID)
         e.target.reset()
     }
 
@@ -51,7 +51,7 @@ class Comment {
             let newComment = new Comment(comment)
 
             const item = Item.allItems.find(c => parseInt(c.id) === newComment.item_id)
-            Item.comments.push(newComment)
+            item.comments.push(newComment)
 
             newComment.renderComment(commentList)
         })
