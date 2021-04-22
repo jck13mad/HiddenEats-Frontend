@@ -1,41 +1,41 @@
-class MenuItem {
-    static allMenuItems = []
+class Item {
+    static allItems = []
 
-    constructor(menuItem){
-        this.id = menuItem.id 
-        this.name = menuItem.attributes.name
-        this.image = menuItem.attributes.image 
-        this.description = menuItem.attributes.description
-        this.company = menuItem.attributes.company
-        this.comments = menuItem.attributes.comments
+    constructor(item){
+        this.id = item.id 
+        this.name = item.attributes.name
+        this.image = item.attributes.image 
+        this.description = item.attributes.description
+        this.company = item.attributes.company
+        this.comments = item.attributes.comments
 
-        MenuItem.allMenuItems.push(this)
-        this.renderMenuItem()
+        Item.allItems.push(this)
+        this.renderItem()
     }
 
-    static renderMenuItems(menuItems) {
-        menuItemList.innerHTML = ""
-        for (let menuItem of menuItems){
-            menuItem.renderMenuItem()
+    static renderItems(items) {
+        itemList.innerHTML = ""
+        for (let item of items){
+            item.renderItem()
         }
     }
 
-    static fetchMenuItems(){
-        fetch(menuItemsURL)
+    static fetchItems(){
+        fetch(itemsURL)
         .then(response => response.json())
-        .then(menuItems => {
-            for(let menuItem of menuItems.data){
-                let newMenuItemList = new MenuItem(menuItem)
+        .then(items => {
+            for(let item of items.data){
+                let newItemList = new Item(item)
             }
         })
     }
 
 
-    renderMenuItem(){
-        const menuItemLI = document.createElement('li')
+    renderItem(){
+        const itemLI = document.createElement('li')
 
-        menuItemLI.dataset.id = this.id 
-        menuItemList.appendChild(menuItemLI)
+        itemLI.dataset.id = this.id 
+        itemList.appendChild(itemLI)
 
         const h3 = document.createElement('h3')
         h3.className=("card-header")
@@ -56,7 +56,7 @@ class MenuItem {
         const deleteBtn = document.createElement("button")
         deleteBtn.className = "btn btn-primary btn-sm"
         deleteBtn.innerText = "Remove Hidden Eat"
-        deleteBtn.addEventListener("click", this.deleteMenuItem)
+        deleteBtn.addEventListener("click", this.deleteItem)
 
         const commentForm = document.createElement('form')
         commentForm.innerHTML += `<input type="text"  class="form-control" id="comment-input" placeholder="Comment Here">
@@ -73,12 +73,12 @@ class MenuItem {
             newComment.renderComment(commentList)
         })
 
-        menuItemLI.append( h3, h4, img, p, commentForm, commentList, deleteBtn)
+        itemLI.append( h3, h4, img, p, commentForm, commentList, deleteBtn)
     }
 
-    static submitMenuItem(e){
+    static submitItem(e){
         e.preventDefault()
-        fetch(menuItemsURL, {
+        fetch(itemsURL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -86,22 +86,22 @@ class MenuItem {
             },
             body: JSON.stringify({
                 image: imageInput.value,
-                name: menuItemNameInput.value,
+                name: itemNameInput.value,
                 company: companyNameInput.value,
                 description: descriptionInput.value
             })
         })   
         .then(response => response.json())
-        .then(menuItem => {
-            let newMenuItem = new MenuItem(menuItem.data)
-            menuItemForm.reset()
+        .then(item => {
+            let newItem = new Item(item.data)
+            itemForm.reset()
         })
     }
 
-    deleteMenuItem(){
-        const menuItemID = this.parentElement.dataset.id
+    deleteItem(){
+        const itemID = this.parentElement.dataset.id
 
-        fetch(`${menuItemsURL}/${menuItemID}`,{
+        fetch(`${itemsURL}/${itemID}`,{
             method: "DELETE"
         })
         this.parentElement.remove()

@@ -1,23 +1,24 @@
-const menuItemsURL = "http://localhost:3000/menuItems"
+const itemsURL = "http://localhost:3000/items"
 const commentsURL = "http://localhost:3000/comments"
-const menuItemForm = document.getElementById("menu-item-form")
+const itemForm = document.getElementById("item-form")
 const imageInput = document.getElementById("input-image-url")
-const menuItemNameInput = document.getElementById("input-menu-item-name")
+const itemNameInput = document.getElementById("input-item-name")
 const companyNameInput = document.getElementById("input-company-name")
 const descriptionInput = document.getElementById("input-description")
-const menuItemList = document.getElementById("menu-item-list")
+const itemList = document.getElementById("item-list")
 const searchBar = document.getElementById("searchBar")
 
 searchBar.addEventListener("keyup", function(e){
     const searchInput = e.target.value.toLowerCase()
-    const searchResult = MenuItem.allMenuItems.filter(menuItem => {
-        if (menuItem.name.toLowerCase().includes(searchInput)){
+    const searchResult = Item.allItems.filter(item => {
+        if (item.name.toLowerCase().includes(searchInput)){
             return true
         } 
     })
-    MenuItem.renderMenuItems(searchResult)
+    Item.renderItems(searchResult)
 })
 
-menuItemForm.addEventListener("submit", MenuItem.submitMenuItem)
+itemForm.addEventListener("submit", Item.submitItem())
 
-MenuItem.fetchMenuItems()
+Item.fetchItems()
+Item.renderItems(itemList)

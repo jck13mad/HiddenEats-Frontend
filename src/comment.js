@@ -2,7 +2,7 @@ class Comment {
     constructor(comment){
         this.id = comment.id 
         this.content = comment.content 
-        this.menu_item_id = comment.menu_item_id
+        this.item_id = comment.item_id
     }
 
     static createComment(e){
@@ -10,9 +10,9 @@ class Comment {
         const li = document.createElement('li')
         const commentContent = e.target.children[0].value
         const commentList = e.target.previousElementSibling
-        const menuItemID = e.target.parentElement.dataset.id
+        const itemID = e.target.parentElement.dataset.id
 
-        Comment.submitComment(commentContent, commentList, menuItemID, li)
+        Comment.submitComment(commentContent, commentList, itemID, li)
         e.target.reset()
     }
 
@@ -33,7 +33,7 @@ class Comment {
         commentList.appendChild(li)
     }
 
-    static submitComment(commentContent, commentList, menuItemID){
+    static submitComment(commentContent, commentList, itemID){
         fetch(commentsURL, {
             method: "POST",
             headers: {
@@ -42,7 +42,7 @@ class Comment {
             },
             body: JSON.stringify({
                 content: commentContent,
-                menu_item_id: menuItemID,
+                item_id: itemID,
                 commentList: commentList
             })
         })
@@ -50,8 +50,8 @@ class Comment {
         .then(comment => {
             let newComment = new Comment(comment)
 
-            const menuItem = MenuItem.allMenuItems.find(c => parseInt(c.id) === newComment.menu_item_id)
-            menuItem.comments.push(newComment)
+            const item = Item.allItems.find(c => parseInt(c.id) === newComment.item_id)
+            Item.comments.push(newComment)
 
             newComment.renderComment(commentList)
         })
