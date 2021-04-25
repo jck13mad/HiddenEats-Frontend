@@ -1,18 +1,20 @@
 class Comment {
+    static allComments = []
+
     constructor(comment){
         this.id = comment.id 
         this.content = comment.content 
         this.item_id = comment.item_id
+        Comment.allComments.push(this)
     }
 
     static createComment(e){
         e.preventDefault()
-        const li = document.createElement('li')
         const commentContent = e.target.children[0].value
         const commentList = e.target.previousElementSibling
         const itemID = e.target.parentElement.dataset.id
 
-        Comment.submitComment(commentContent, commentList, itemID)
+        submitComment(commentContent, commentList, itemID)
         e.target.reset()
     }
 
@@ -30,32 +32,42 @@ class Comment {
         li.append(lnbr, deleteBtn)
 
         deleteBtn.addEventListener("click", this.deleteComment)
-        commentList.appendChild(li)
+
+        if(commentList){
+        commentList.nextElementSibling.append(li)
+        } else {
+            //attach comment to li with data-id same as item-id
+            const li2 = document.getElementsByClassName(`${this.item_id}`)
+            li2[0].append(li)
+        }
+        
     }
 
-    static submitComment(commentContent, commentList, itemID){
-        fetch(commentsURL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            body: JSON.stringify({
-                content: commentContent,
-                item_id: itemID,
-                commentList: commentList
-            })
-        })
-        .then(response => response.json())
-        .then(comment => {
-            let newComment = new Comment(comment)
 
-            const item = Item.allItems.find(c => parseInt(c.id) === newComment.item_id)
-            item.comments.push(newComment)
 
-            newComment.renderComment(commentList)
-        })
-    }
+    // static submitComment(commentContent, commentList, itemID){
+    //     fetch(commentsURL, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Accept": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //             content: commentContent,
+    //             item_id: itemID,
+    //             commentList: commentList
+    //         })
+    //     })
+    //     .then(response => response.json())
+    //     .then(comment => {
+    //         let newComment = new Comment(comment)
+
+    //         const item = Item.allItems.find(c => parseInt(c.id) === newComment.item_id)
+    //         item.comments.push(newComment)
+
+    //         newComment.renderComment(commentList)
+    //     })
+    // }
 
     deleteComment(){
         const commentID = this.parentElement.dataset.id
